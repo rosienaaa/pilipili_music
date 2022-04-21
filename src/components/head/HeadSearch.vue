@@ -18,10 +18,10 @@
 </template>
 
 <script>
-
+import bus from '../../eventBus';
 export default {
     name: 'HeadSearch',
-    el: '#search',
+    // el: '#search',
     data() {
         return {
             isShow: false,
@@ -56,8 +56,8 @@ export default {
         playMusic: function(musicId) {
             var that = this;
             this.$axios.get("https://autumnfish.cn/song/url?id=" + musicId).then(function(response) {
-
                     that.musicUrl = response.data.data[0].url;
+                    bus.emit('musicUrl',that.musicUrl);
                     console.log(that.musicUrl);
                 }, function(error) {
                     console.log(error);
@@ -83,7 +83,7 @@ export default {
 
 <style>
 .head-search {
-    position: fixed;
+    position: absolute;
     width: 170px;
     height: 35px;
     top: 3%;
@@ -97,12 +97,14 @@ export default {
     height: 200px;
     background-color: white;
     overflow: auto;
+    z-index: 4;
     /* display: none; */
 }
 
 .searchs ul li {
     cursor: pointer;
     margin: 10px;
+    
 }
 
 .head-search input {

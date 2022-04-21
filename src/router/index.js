@@ -1,15 +1,15 @@
 import {createRouter, createWebHashHistory} from "vue-router"
 // import Home from '../src/components/Home.vue'
 // import Blog from '../src/components/Blog.vue' 
-import Music from '../src/components/music/MusicTab.vue' 
-import Video from '../src/components/music/MusicVideo.vue'
-import Collection from '../src/components/music/MusicCollection.vue'
-import Recommend from '../src/components/music/MusicRecommend.vue'
-import PlayList from '../src/components/bars/PlayList.vue'
-import YouLike from '../src/components/bars/YouLike.vue'
-import RankingList from '../src/components/bars/RankingList.vue'
-import Singer from '../src/components/bars/SinGer.vue'
-import MusicTrack from '../src/components/playlists/MusicTrack.vue'
+import Music from '../components/music/MusicTab.vue' 
+import Video from '../components/music/MusicVideo.vue'
+import Collection from '../components/music/MusicCollection.vue'
+import Recommend from '../components/music/MusicRecommend.vue'
+import PlayList from '../components/bars/PlayList.vue'
+import YouLike from '../components/bars/YouLike.vue'
+import RankingList from '../components/bars/RankingList.vue'
+import Singer from '../components/bars/SinGer.vue'
+import MusicTrack from '../components/playlists/MusicTrack.vue'
 
 const router = createRouter({
     history:createWebHashHistory(),

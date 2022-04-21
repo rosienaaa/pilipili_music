@@ -48,6 +48,13 @@
       "unicode_decimal": 59516
     },
     {
+      "icon_id": "2154283",
+      "name": "单曲循环_32",
+      "font_class": "danquxunhuan",
+      "unicode": "e66d",
+      "unicode_decimal": 58989
+    },
+    {
       "icon_id": "2380683",
       "name": "循环",
       "font_class": "xunhuan",
@@ -76,6 +83,20 @@
       "unicode_decimal": 60543
     },
     {
+      "icon_id": "7417086",
+      "name": "上一首",
+      "font_class": "shangyishou",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "7417092",
+      "name": "下一首",
+      "font_class": "xiayishou",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
       "icon_id": "7708031",
       "name": "右箭头",
       "font_class": "youjiantou",
@@ -90,11 +111,18 @@
       "unicode_decimal": 59577
     },
     {
+      "icon_id": "11372756",
+      "name": "爱心",
+      "font_class": "aixin",
+      "unicode": "e8c3",
+      "unicode_decimal": 59587
+    },
+    {
       "icon_id": "17830628",
       "name": "左箭头",
       "font_class": "zuojiantou",
-      "unicode": "e604",
-      "unicode_decimal": 58884
+      "unicode": "e605",
+      "unicode_decimal": 58885
     },
     {
       "icon_id": "27435286",

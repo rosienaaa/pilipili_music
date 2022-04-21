@@ -5,7 +5,7 @@
 			<p>pilipili音乐</p>
 		</div>
 		<div class="head-back">
-			<span id="backone" class="iconfont">&#xe604;</span>
+			<span id="backone" class="iconfont">&#xe605;</span>
 			<span id="backtwo" class="iconfont">&#xe61d;</span>
 		</div>	
 	</div>
@@ -19,7 +19,7 @@ export default {
 
 <style>
 .head {
-    position: fixed;
+    position: absolute;
     width: 100%;
     height: 70px;
     top: 0;
@@ -31,13 +31,13 @@ export default {
     /* position: absolute; */
     width: 250px;
     height: 100%;
-    left: -5%;
+    left: 2%;
 }
 
 .head-icon p {
     position: absolute;
     top: 25px;
-    left: 150px;
+    left: 50px;
     text-align: center;
     color: #fff;
 }

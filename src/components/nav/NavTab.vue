@@ -22,7 +22,7 @@ export default {
 .nav{
     position: fixed;
     top: 70px;
-    height: 500px;
+    height: 700px;
     width: 183px;
     border-right: 1px solid #ccc;
     /* background-color: #42275a; */

@@ -1,11 +1,13 @@
 <template>
-  <div id="loginto">
+<div>
+    <div id="loginto">
     <div class="head-login">
         <p @click="butt" class="logon" v-show="logSh">{{userlogin}}</p>
         <image class="" :src="userUrl">
         </image>
     </div>
     <div class="head-loginto" v-show="isFalse">
+        
         <div id="but1-2">
             <div class="but1" @click="bu">登录</div>
             <div class="but2" @click="bu">注册</div>
@@ -21,14 +23,15 @@
             <div class="login-inp">
                 <input class="in3" type="submit" id="tt" value="登录" @click="userLogin"/>
             </div>
-            <div class="check">
+            <!-- <div class="check">
                 <input type="checkbox"> 同意
                 <a href="https://st.music.163.com/official-terms/service">《服务条款》</a>
                 <a href="https://st.music.163.com/official-terms/privacy">《隐私政策》</a>
                 <a href="https://st.music.163.com/official-terms/children">《儿童隐私政策》</a>
-            </div>
+            </div> -->
         </div>
         <div class="login2" v-show="!isTrue">
+            <hr>
             <form>
                 <div class="user-inp">
                     <input class="in1" type="text" placeholder="请输入手机号"/>
@@ -38,15 +41,18 @@
             <div class="login-inp">
                 <input class="in3" type="submit" id="tt" value="注册" />
             </div>
-            <div class="check">
+            <!-- <div class="check">
                 <input type="checkbox"> 同意
                 <a href="https://st.music.163.com/official-terms/service">《服务条款》</a>
                 <a href="https://st.music.163.com/official-terms/privacy">《隐私政策》</a>
                 <a href="https://st.music.163.com/official-terms/children">《儿童隐私政策》</a>
-            </div>
+            </div> -->
         </div>
     </div>
+    </div>
+    <div class="log-backg" v-show="isFalse" :style="true?windowheight:''">hhh</div>
 </div>
+
 </template>
 
 <script>
@@ -55,7 +61,7 @@ export default {
     el: '#loginto',
     data() {
         return {
-            isTrue: true,
+            isTrue: true,//是否显示登陆界面
             isFalse: false,
             phone:'',
             email:'',
@@ -66,7 +72,11 @@ export default {
             userId:'472271342',
             userUrl:'',
             captcha:'',
-            logSh:true
+            logSh:true,
+            windowheight:{
+                height:document.documentElement.clientHeight+'px',
+                overflow:'hidden'
+            }
         }
         
     },
@@ -84,7 +94,7 @@ export default {
             this.$axios.get("https://autumnfish.cn/captcha/sent?phone="+this.phone)
                 .then(function(response) {
                 console.log(response);
-                this.captcha = response.data;
+                // this.captcha = response.data;
             })
         },
         users:function() {
@@ -111,6 +121,12 @@ export default {
 </script>
 
 <style>
+/* .log-backg{
+    width: 100%;
+    height: 700px;
+    background-color: #ccc;
+    z-index: 2;
+} */
 .head-login {
     position: absolute;
     right: 10%;
@@ -118,16 +134,18 @@ export default {
     color: #fff;
     cursor: pointer;
 }
+
 .head-loginto {
     position: absolute;
     /* display: none; */
     z-index: 3;
-    left: 40%;
-    width: 350px;
-    height: 350px;
+    right: 40%;
+    width: 320px;
+    height: 290px;
     margin: 0 auto;
-    margin-top: 11%;
-    background-color: rgb(255, 255, 255);
+    margin-top: 10%;
+    background-color: rgb(0,0,0);
+    /* background-image: src("../../images/6.png"); */
     border-radius: 8%;
     backdrop-filter: blur(3px);
     border-left: 2px solid rgba(255, 255, 255, .3);
@@ -139,7 +157,7 @@ export default {
     /* width: 240px;
     height: 35px; */
     border: none;
-    color: black;
+    /* color: #fff; */
     font-size: 17px;
     font-weight: 500;
     /* margin-bottom: 38px; */
@@ -151,7 +169,12 @@ export default {
     border-right: 2px solid rgba(255, 255, 255, .3);
     box-shadow: 2px 2px 2px rgba(0, 0, 0, .2);
 }
-
+.login2 hr{
+    position: absolute;
+    height:3px;
+    bottom: 0;
+    background-color: #fff;
+}
 .user-inp {
     padding-top: 85px;
     padding-left: 25px;
@@ -160,25 +183,31 @@ export default {
 .user-inp input {
     padding-left: 10px;
     /* left: 30px; */
-    width: 290px;
+    width: 250px;
     height: 35px;
     margin-bottom: 30px;
+    background-color: #fff;
 }
-
+.user-inp::placeholder {
+    color: #000;
+    font-size: 15px;
+    /* opacity: 0.8; */
+}
 .login-inp input {
     background-color: rgb(140, 89, 143);
     font-size: 20px;
-    text-shadow: rgba(0, 0, 0, .3);
+    text-shadow: rgba(255, 255, 255, .7);
 }
 
 .in3 {
-    width: 305px;
+    width: 270px;
     height: 40px;
     bottom: 20px;
     opacity: 0.9;
     top: 220px;
     margin-left: 25px;
     cursor: pointer;
+    color: #fff;
 }
 
 .in4 {
@@ -190,7 +219,7 @@ export default {
     top: 20px;
     font-size: 20px;
     /* background-color: plum; */
-    color: #000;
+    color: #947ca8;
     cursor: pointer;
 }
 
@@ -212,6 +241,7 @@ export default {
 .but1 {
     margin-right: 60px;
     /* background-color: #fff; */
+    color: #fff;
     cursor: pointer;
 }
 
@@ -223,7 +253,7 @@ export default {
     /* right: 0; */
     bottom: 0px;
     width: 55px;
-    height: 2px;
+    height: 3px;
     border-radius: 2px;
     margin: 0 auto;
     background: #947ca8;
@@ -231,7 +261,7 @@ export default {
 
 .but1aft {
     margin-right: 60px;
-    color: gray;
+    color: #fff;
     cursor: pointer;
 }
 
@@ -250,7 +280,7 @@ export default {
 }
 
 .but2 {
-    color: gray;
+    color: #fff;
     cursor: pointer;
 }
 
@@ -293,10 +323,6 @@ export default {
     transform: all 5s;
 }
 
- ::placeholder {
-    color: gray;
-    font-size: 15px;
-    /* opacity: 0.8; */
-}
+
 
 </style>

@@ -52,7 +52,7 @@ export default {
                 // this.bann = reactive(res.data.banners);
                 // this.banners = toRaw(this.bann);
                 this.banners = res.data.banners;
-                console.log(this.banners);
+                // console.log(this.banners);
             })
         },
         MusicPlay(id) {

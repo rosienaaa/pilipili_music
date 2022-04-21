@@ -3,23 +3,35 @@
         <div class="barList">
             <ul class="bar-di">
                 <div class="linka">
-                <router-link to="/music/like" class="current">推荐</router-link>
-                <router-link to="/music/playlist">歌单</router-link>
-                <router-link to="/music/rankinglist">排行榜</router-link>
-                <router-link to="/music/singer">歌手</router-link>
-                </div>
-                <div class="youlike">
-                    <router-view></router-view>
+                    <router-link to="/music/like" class="current" data-id="1" @click="addcla()">推荐</router-link>
+                    <router-link to="/music/playlist" data-id="2" @click="addcla()">歌单</router-link>
+                    <router-link to="/music/rankinglist" data-id="3" @click="addcla()">排行榜</router-link>
+                    <router-link to="/music/singer" data-id="4" @click="addcla()">歌手</router-link>
                 </div>
                 
             </ul>
+            <div class="youlike">
+                    <router-view></router-view>
+                </div>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    name: 'MusicTab'
+    name: 'MusicTab',
+    data() {
+        return {
+            nulls: [],
+        }
+    },
+    methods:{
+        addcla(){
+            // var curr = document.querySelector('.linka').getElementsByTagName('a')
+            // console.log(curr.getAttribute("data-id"))
+        }
+    }
+    
 }
 </script>
 
@@ -32,8 +44,8 @@ export default {
 .bar {
     /* background-color: #000; */
     position: absolute;
-    left: 18%;
-    top: 16%;
+    left: 200px;
+    top: 0%;
     padding-right: 100px;
     font-size: 20px;
     font-weight: bold;
@@ -54,7 +66,9 @@ export default {
     left: 0%;
     top: 75px;
     height: 1200px;
+    width:100%;
     overflow: auto;
+    z-index: 5;
     /* background-color: pink; */
 }
 .bar-di {
@@ -74,7 +88,7 @@ export default {
     /* background-color: #000; */
 }
 
-.current::after {
+/* .current::after {
     content: "";
     display: block;
     position: absolute;
@@ -83,14 +97,6 @@ export default {
     height: 3px;
     border-radius: 2px;
     background: #947ca8;
-}
+} */
 
-.centent {
-    position: absolute;
-    left: 10px;
-    top: 64px;
-    /* background-color: plum; */
-    width: 1316px;
-    height: 550px;
-}
 </style>

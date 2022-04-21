@@ -5,22 +5,25 @@ import Vuex from 'vuex'
 
 
     const state = {
-        // 音乐的url
-    lisId: '',
+    //登录状态
+    login:false,
+    // 是否登录
+    isLogin: false,
     // 音乐的播放状态
     isPlay: false,
     // 当前播放的歌单
     musicList: [],
     // 当前播放歌单的id
     musicListId: '',
-    // 是否登录
-    isLogin: false,
+    //当前播放的歌曲URL
+    musicUrl:'',
+    
     // 当前播放音乐的索引
     currentIndex: -1,
     // 音乐详情卡片的显隐
     isMusicDetailCardShow: false,
     // 实时播放时长
-    currentTime: 0,
+    // currentTime: 0,
     // 音乐是否在加载中
     isMusicLoad: false,
     // 在歌手详情保存的上一首歌曲信息
@@ -45,6 +48,13 @@ import Vuex from 'vuex'
     },
     // 已喜欢的视频
     likeVideoList: null,
+    }
+
+    {
+        //保存当前播放歌曲的url
+        // saveMusicUrl(state,musicUrl){
+        //     state.musicUrl = musicUrl;
+        // }
     }
 
     const store = new Vuex.Store({
