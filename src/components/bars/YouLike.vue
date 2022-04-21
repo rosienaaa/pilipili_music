@@ -47,7 +47,7 @@ export default {
                 // console.log(response);
                 this.liLists = response.data.playlists;
                 this.coverImgUrl = response.data.playlists;
-            }),
+            }), 
             this.$axios.get('/banner').then(res=>{
                 // this.bann = reactive(res.data.banners);
                 // this.banners = toRaw(this.bann);
@@ -103,6 +103,7 @@ ul {
     width: 1260px;
     /* height: 256px; */
     /* margin-left: 32px; */
+    z-index: 5;
     margin-top: 25px;
     /* background-color: #000; */
 }
@@ -160,7 +161,7 @@ ul {
 .imgul {
     position: absolute;
     /* left: 10px; */
-    left: -20px;
+    /* left: 20px; */
     width: 100%;
     height: 620px;
     /* background-color: #000; */

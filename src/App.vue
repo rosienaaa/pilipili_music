@@ -8,8 +8,7 @@
     <div>
       <Nav></Nav>
     </div>
-    <div>
-    </div>
+      <bottom/>
   </div>
 </template>
 
@@ -17,8 +16,9 @@
 import Head from './components/head/HeadIcon.vue'
 import Search from './components/head/HeadSearch.vue'
 import Login from './components/head/HeadLogin.vue'
-import MusicTab from './components/music/MusicTab.vue'
+// import MusicTab from './components/music/MusicTab.vue'
 import Nav from './components/nav/NavTab.vue'
+import Bottom from './components/bottomAudio/BottomAudio.vue'
 export default {
   name: 'App',
   components:{
@@ -26,8 +26,10 @@ export default {
     Search,
     Login,
     Nav,
+    Bottom,
     // eslint-disable-next-line vue/no-unused-components
-    MusicTab,
+    
+    
   },
   
 }
@@ -58,66 +60,6 @@ export default {
     position: relative;
 }
 
-.centent {
-    position: absolute;
-    /* background-color: plum; */
-    width: 1005px;
-    height: 400px;
-    left: 0%;
-    top: 70px;
-    /* overflow: hidden; */
-}
 
-.curren {
-    position: absolute;
-    left: 103%;
-    top: 3px;
-    width: 100%;
-    /* max-height: 1600px; */
-    /* background-color: pink; */
-}
-
-.aside .bar {
-    /* background-color: #000; */
-    /* margin-top: 20px;
-    margin-left: 40px; */
-    padding-right: 100px;
-    font-size: 20px;
-    font-weight: bold;
-    height: 20px;
-    width: 1216px;
-}
-
-.bar-di {
-    width: 100%;
-    list-style: none;
-}
-
-.bar-di li {
-    cursor: pointer;
-    padding-left: 20px;
-}
-
-
-.check {
-    position: absolute;
-    left: 25px;
-    bottom: 30px;
-    border: none;
-    font-size: 14px;
-}
-
-.check a {
-    margin-right: -10px;
-}
-
-.audioMus {
-    position: fixed;
-    bottom: 0;
-}
-
-.audioMus audio {
-    width: 1520px;
-}
 
 </style>
