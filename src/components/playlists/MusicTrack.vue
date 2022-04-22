@@ -56,7 +56,7 @@
                 </th>
                 <tr>
                     <td>
-                        <li v-for="ite in 10" :key=ite>{{ite}}</li>
+                        <li v-for="ite in 10" :key=ite>{{foritem(ite)}}</li>
                     </td>
                     <td class="index">
                         <li  v-for="(mu,index) in privileges" @dblclick="getmusid(mu.id,index)" ref="dataid" :data-id="index" :key="index">{{mu.name}}</li>
@@ -189,24 +189,22 @@ export default {
                 bus.emit('istr',this.istr);
                 })
         },
-        formatDuraton(times){
-            var t;
-            if(times > -1){
-                var hour = Math.floor(times/3600);
-                var min = Math.floor(times/60) % 60;
-                var sec = times % 60;
-                if(hour < 10) {
-                    t = '0'+ hour + ":";
-                } else {
-                    t = hour + ":";
-                }
-                if(min < 10){t += "0";}
-                t += min + ":";
-                if(sec < 10){t += "0";}
-                t += sec.toFixed(2);
-        }
-            t=t.substring(0,t.length-3);
-            return t;
+        foritem(s){
+            if(s < 10){
+                return '0' + s
+            }else{
+                return s
+            }
+        },
+        formatDuraton(mss){
+                // let days = Math.floor(mss / (1000 * 60 * 60 * 24));
+                // let hour = Math.floor((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minute = Math.floor((mss % (1000 * 60 * 60)) / (1000 * 60));
+                let second = Math.round((mss % (1000 * 60)) / 1000);
+                minute = minute < 10 ? '0' + minute : minute
+                second = second < 10 ? '0' + second : second
+                return minute + ':' + second
+                // return minutes + "分钟" + seconds + "秒";
         },
         getids(){
             var ids = this.$route.query.id;
@@ -221,13 +219,13 @@ export default {
                 this.thisurl = 0;
                 this.istr = true;
                 this.playLi =resp.data.playlist;
-                this.singerName = resp.data.playlist.tracks[this.thisurl].ar[0].name;
-                this.musicName = resp.data.playlist.tracks[this.thisurl].name;
-                this.picUrl = resp.data.playlist.tracks[this.thisurl].al.picUrl;
-                bus.emit('musicName',this.musicName);
-                bus.emit('singerName',this.singerName);
-                bus.emit('picUrl',this.picUrl)
-                bus.emit('thisid',this.thisurl);
+                // this.singerName = resp.data.playlist.tracks[this.thisurl].ar[0].name;
+                // this.musicName = resp.data.playlist.tracks[this.thisurl].name;
+                // this.picUrl = resp.data.playlist.tracks[this.thisurl].al.picUrl;
+                // bus.emit('musicName',this.musicName);
+                // bus.emit('singerName',this.singerName);
+                // bus.emit('picUrl',this.picUrl)
+                // bus.emit('thisid',this.thisurl);
                 bus.emit('istr',this.istr);
                 bus.emit('musids',this.ids);
             })
@@ -235,9 +233,10 @@ export default {
     },
     created(){
         this.getPlay();
-        this.lsUpDown()
         bus.on('thisurl',thisurl=>{
             this.thisurl = thisurl;
+            
+            // console.log(this.thisurl);
             this.singerName = this.playLi.tracks[thisurl].ar[0].name;
             this.musicName = this.playLi.tracks[thisurl].name;
             this.picUrl = this.playLi.tracks[thisurl].al.picUrl;
@@ -250,16 +249,29 @@ export default {
         })
     },
     update(){
-        
+        // bus.on('thisurl',thisurl=>{
+        //     this.thisurl = thisurl;
+        //     console.log(this.thisurl);
+        //     this.singerName = this.playLi.tracks[thisurl].ar[0].name;
+        //     this.musicName = this.playLi.tracks[thisurl].name;
+        //     this.picUrl = this.playLi.tracks[thisurl].al.picUrl;
+        //     // console.log(this.singerName, this.musicName)
+        //     // console.log(this.thisurl)
+        //     bus.emit('musicName',this.musicName);
+        //     bus.emit('singerName',this.singerName);
+        //     bus.emit('picUrl',this.picUrl)
+        //     bus.emit('thisid',this.thisurl);
+        // })
         // this.getids()
+        // this.getPlay();
     }
     
 }
 </script>
 
 <style>
-.pritab{
-    width: 100%; 
+.pritab table{
+    width: 1250px; 
     height:100%;
     /* background-color: #000; */
     position:relative;
@@ -286,20 +298,21 @@ export default {
     width: 5%;
 }
 .pritab tr td:nth-child(2){
-    width: 50%;
+    width: 40%;
     color: rgba(0,0,0,0.7);
 }
 .pritab tr td:nth-child(3){
-    width: 22%;
+    width: 20%;
     color: rgba(0,0,0,0.6);
 }
 .pritab tr td:nth-child(4){
-    width: 20%;
+    width: 25%;
     color: rgba(0,0,0,0.6);
 }
 .pritab tr td:nth-child(5){
     text-align:left;
-    width: 15%;
+    width: 10%;
+    margin-left: 30px;
     color: rgba(0,0,0,0.6);
 }
 .tracks{
@@ -334,7 +347,7 @@ export default {
     position: absolute;
     top: 30%;
     width:1250px;
-    height:580px;
+    /* height:580px; */
     text-align: left;
     /* background-color: pink; */
     font-size:12px;
@@ -407,6 +420,7 @@ export default {
 .track_names p:nth-child(5){
     position: absolute;
     top:158px;
+    width: 1000px;
     font-size:13px;
     color: rgba(0,0,0,0.6);
     text-overflow: ellipsis;

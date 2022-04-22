@@ -94,6 +94,7 @@ export default {
         bus.on('musids',ids=>{
             this.musids = ids;
             this.getSrc()
+            // bus.emit('thisurl',this.thisurl)
             // console.log(this.musids);
         })
         bus.on('istr',istr=>{
@@ -112,6 +113,7 @@ export default {
             this.picUrl = picUrl;
             // console.log(picUrl);
         })
+        
         bus.emit('thisurl',this.thisurl)
     },
     beforeUpdate(){
@@ -120,35 +122,9 @@ export default {
     updated(){
         bus.on('istr',istr=>{
             this.iftr = istr;
-        });
-        bus.on('musicName',musicName=>{
-            this.musicName = musicName;
-            // console.log(musicName);
-        });
-        bus.on('singerName',singerName=>{
-            this.singerName = singerName;
-            // console.log(singerName);
-        });
-        bus.on('picUrl',picUrl=>{
-            this.picUrl = picUrl;
-            // console.log(picUrl);
         })
-        bus.on('musids',ids=>{
-            this.musids = ids;
-            
-            // console.log(this.musids);
-        })
-        bus.on('thisid',index=>{
-            this.thisurl = index;
-            
-            // console.log(this.thisurl);
-        });
-        bus.on('musicUrl',musicUrl=>{
-            this.musurl = musicUrl;
-            
-        });
         bus.emit('thisurl',this.thisurl)
-        this.getSrc()
+        
     },
     computed:{
         formatTotalTime() {
@@ -192,7 +168,8 @@ export default {
             
             if(this.thisurl > 0){
                 this.thisurl --
-                console.log(this.thisurl)
+                // console.log(this.thisurl)
+                this.getSrc()
             }else{
                 alert("没有上一首歌了哦")
             }
@@ -202,9 +179,13 @@ export default {
             
             if(this.thisurl >=  this.musids.length -1){
                 this.thisurl = 0;
+                this.getSrc()
+                // bus.emit('thisurl',this.thisurl)
             }else{
                 this.thisurl ++
-                console.log(this.thisurl)
+                this.getSrc()
+                // console.log(this.thisurl)
+                // bus.emit('thisurl',this.thisurl)
             }
         },
 
@@ -223,6 +204,7 @@ export default {
             const timeToGo = (value / 360) * this.totalTime
             const audio = this.$refs.audio
             audio.currentTime = timeToGo
+            // this.getAudioEnded()
             // console.log(audio.currentTime)
         },
         // audio--进度变化的时候的回调--改变文字
@@ -233,6 +215,7 @@ export default {
             // console.log('this.totalTime:'+this.totalTime)
             // console.log('this.currentTime:'+this.currentTime)
             // 改变进度条的值
+            this.getAudioEnded()
             const range = this.$refs.range
             range.value = ((this.currentTime / this.totalTime) * 360).toFixed(1)
             // console.log('range.value:'+range.value)
@@ -255,30 +238,34 @@ export default {
         },
         getSrc:function() {
             // console.log(this.musids)
-            // console.log(this.thisurl)
-            // const audio = this.$refs.audio;
             // console.log(audio.readyState)
             if(this.musids !== undefined && this.musids !== '' && this.musids !== null) {
                 this.$axios.get("/song/url?id="+this.musids[this.thisurl]).then((response) =>{
                     // console.log(response)
+                    
                     this.musurl = response.data.data[0].url;
                     // this.$store.commit('saveMusicUrl',this.musurl)
                     // console.log(this.musurl) 
-                    // if(audio.ended == true) {
-                    //     // console.log('播完啦')
-                    //     this.thisurl++;
-                    //     console.log(this.thisurl)
-                    //     this.$axios.get("/song/url?id="+this.musids[this.thisurl]).then((response) =>{
-                    //     this.musurl = response.data.data[0].url
-                    //     })
-                    // }
-                    // if(this.thisurl >= this.musids.length-1){
-                    //     this.iftr = false
-                    //     audio.pause();
-                    //     // return;
-                    // }
                 })}
             
+        },
+        getAudioEnded(){
+            const audio = this.$refs.audio;
+            // console.log(audio.ended)
+            if(audio.ended == true) {
+                console.log('播完啦')
+                this.thisurl++;
+                console.log(this.thisurl)
+                this.$axios.get("/song/url?id="+this.musids[this.thisurl]).then((response) =>{
+                this.musurl = response.data.data[0].url
+                })
+            }
+            if(this.thisurl > this.musids.length-1){
+                console.log("没有啦")
+                this.iftr = false
+                audio.pause();
+                // return;
+            }
         }
         }
     }
@@ -309,7 +296,8 @@ export default {
     /* overflow: hidden; */
 }
 .music-item img{
-    width: 70px;
+    width: 60px;
+    height: 50px;
     border-radius: 10px;
     /* height:100%; */
 }

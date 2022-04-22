@@ -2,60 +2,53 @@
 <div>
     <div id="loginto">
     <div class="head-login">
-        <p @click="butt" class="logon" v-show="logSh">{{userlogin}}</p>
-        <image class="" :src="userUrl">
-        </image>
+        <div v-show="logSh" @click="loginbut">
+            <p class="logon" >{{userlogin}}</p>
+        </div>
+        <div v-show="!logSh">
+            <p class="logon">{{userName}}</p>
+            <img class="" :src="userUrl">
+        </div>
+        
     </div>
     <div class="head-loginto" v-show="isFalse">
         
         <div id="but1-2">
-            <div class="but1" @click="bu">登录</div>
-            <div class="but2" @click="bu">注册</div>
+            <div class="but1" @click="loginbu">登录</div>
+            <div class="but2" @click="loginbu">注册</div>
         </div>
-        <span @click="but" class="iconfont" id="icon-err">&#xf00b3;</span>
+        <span @click="errbut" class="iconfont" id="icon-err">&#xf00b3;</span>
         <div class="login1" v-show="isTrue">
             <form>
                 <div class="user-inp">
-                    <input class="in1" type="text" placeholder="请输入手机号"/>
-                    <input class="in2" type="password" placeholder="请输入密码" autocomplete />
+                    <input class="in1" v-model="userPhone" type="text" placeholder="请输入手机号"/>
+                    <input class="in2" v-model="userPassword" type="password" placeholder="请输入密码" autocomplete />
                 </div>
             </form>
             <div class="login-inp">
                 <input class="in3" type="submit" id="tt" value="登录" @click="userLogin"/>
             </div>
-            <!-- <div class="check">
-                <input type="checkbox"> 同意
-                <a href="https://st.music.163.com/official-terms/service">《服务条款》</a>
-                <a href="https://st.music.163.com/official-terms/privacy">《隐私政策》</a>
-                <a href="https://st.music.163.com/official-terms/children">《儿童隐私政策》</a>
-            </div> -->
         </div>
         <div class="login2" v-show="!isTrue">
-            <hr>
             <form>
                 <div class="user-inp">
-                    <input class="in1" type="text" placeholder="请输入手机号"/>
-                    <input class="in4" type="captcha" placeholder="请输入验证码">
+                    <input class="in1" v-model="userPhone" type="text" placeholder="请输入手机号"/>
+                    <input class="in4"  type="captcha" placeholder="请输入验证码">
                 </div>
             </form>
             <div class="login-inp">
                 <input class="in3" type="submit" id="tt" value="注册" />
             </div>
-            <!-- <div class="check">
-                <input type="checkbox"> 同意
-                <a href="https://st.music.163.com/official-terms/service">《服务条款》</a>
-                <a href="https://st.music.163.com/official-terms/privacy">《隐私政策》</a>
-                <a href="https://st.music.163.com/official-terms/children">《儿童隐私政策》</a>
-            </div> -->
         </div>
     </div>
     </div>
-    <div class="log-backg" v-show="isFalse" :style="true?windowheight:''">hhh</div>
+    <!-- <div class="log-backg" v-show="isFalse" :style="true?windowheight:''">hhh</div> -->
 </div>
 
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 export default {
     name:'HeadLogin',
     el: '#loginto',
@@ -63,60 +56,43 @@ export default {
         return {
             isTrue: true,//是否显示登陆界面
             isFalse: false,
-            phone:'',
-            email:'',
-            password:'',
+            userPhone:'',//手机号
+            userEmail:'',//用户邮箱
+            userPassword:'',//用户密码
             userlogin:'登录/注册',
             status:'',
-            userName:'莉莉',
-            userId:'472271342',
-            userUrl:'',
-            captcha:'',
+            userName:'',//用户名
+            userId:'',//用户id
+            userUrl:'',//用户头像
+            captcha:'',//验证码
             logSh:true,
-            windowheight:{
-                height:document.documentElement.clientHeight+'px',
-                overflow:'hidden'
-            }
         }
-        
     },
     methods: {
-        bu() {
+        loginbu() {
             this.isTrue = !this.isTrue;
             // console.log(this.isTrue)
         },
-        but() {
+        errbut() {
             // console.log()
             this.isFalse = !this.isFalse;
         },
-        butt() {
+        loginbut() {
             this.isFalse = !this.isFalse;
-            this.$axios.get("https://autumnfish.cn/captcha/sent?phone="+this.phone)
-                .then(function(response) {
-                console.log(response);
-                // this.captcha = response.data;
-            })
-        },
-        users:function() {
             
         },
-        userLogin:function(){
-            this.$axios.get("https://autumnfish.cn/login/cellphone?phone="+this.phone+"&password="+this.password)
-                .then(function(response) {
-                    // console.log(response);
-                    this.status = response.data.code;
-                    // console.log(this.status);
+        ...mapMutations(['changeLogin']),
+        userLogin(){
+            // if(this.userPhone === '' || this.userPassword === ''){
+            //     alert('账号或密码不能为空');
+            // }
+            // else{
+                this.$axios.get("/login/cellphone?phone="+this.userPhone+"&password="+this.userPassword).then((response) =>{
+                    console.log(response);
                 })
-            this.$axios.get("https://autumnfish.cn/user/detail?uid="+this.userId)
-                .then(function(response) {
-                // console.log(response);
-                this.userName = response.data.profile.nickname;
-                // console.log(this.userName);
-                // console.log(this.userlogin);
-            })
-            this.userlogin = this.userName;
-        }
+            // }
         },
+    }
 }
 </script>
 
@@ -168,12 +144,6 @@ export default {
     border-left: 2px solid rgba(255, 255, 255, .3);
     border-right: 2px solid rgba(255, 255, 255, .3);
     box-shadow: 2px 2px 2px rgba(0, 0, 0, .2);
-}
-.login2 hr{
-    position: absolute;
-    height:3px;
-    bottom: 0;
-    background-color: #fff;
 }
 .user-inp {
     padding-top: 85px;
