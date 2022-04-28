@@ -1,29 +1,29 @@
 <template>
-  <div id="liPlay">
-    <div class="banners">
-        <!-- <img v-for="ig in banners" :src="ig.imageUrl" :key="ig.id" alt=""> -->
-        <el-carousel :interval="4000" type="card" height="200px">
-            <el-carousel-item v-for="ig in banners" :key="ig.id">
-                <!-- <h3>{{ item }}</h3> -->
-                <img  :src="ig.imageUrl">
-            </el-carousel-item>
-        </el-carousel>
-    </div>
-    <div class="lists">
-        <h3>推荐歌单></h3>
-        <div>
-            <!-- <router-link to="/musiclist/"> -->
-                <div class="aul">
-                    <a v-for="it of liLists" href="" :key="it.id">
-                        {{it.name}}
-                    </a>
-                </div>
-                <div class="imgul">
-                    <img v-for="im in liLists" @click="MusicPlay(im.id)" :key="im.id" :src="im.coverImgUrl">
-                </div>
+    <div id="liPlay">
+        <div class="banners">
+            <!-- <img v-for="ig in banners" :src="ig.imageUrl" :key="ig.id" alt=""> -->
+            <el-carousel :interval="4000" type="card" height="200px">
+                <el-carousel-item v-for="ig in banners" :key="ig.id">
+                    <!-- <h3>{{ item }}</h3> -->
+                    <img  :src="ig.imageUrl">
+                </el-carousel-item>
+            </el-carousel>
+        </div>
+        <div class="lists">
+            <h3>推荐歌单></h3>
+            <div>
+                <!-- <router-link to="/musiclist/"> -->
+                    <div class="aul">
+                        <a v-for="it of liLists" href="" :key="it.id">
+                            {{it.name}}
+                        </a>
+                    </div>
+                    <div class="imgul">
+                        <img v-for="im in liLists" @click="MusicPlay(im.id)" :key="im.id" :src="im.coverImgUrl">
+                    </div>
+            </div>
         </div>
     </div>
-</div>
 </template>
 
 <script>
@@ -75,6 +75,9 @@ export default {
     },
     mounted(){
         this.resPlay();
+    },
+    updated(){
+        // this.MusicPlay()
     }
 }
 </script>

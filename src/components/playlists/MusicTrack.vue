@@ -27,16 +27,6 @@
     </div>
 
     <div class="lispriviles">
-        <!-- <div v-for="mu in privileges" :key="mu.id"></div> -->
-        <!-- <el-table style="font-size: 13px;width:100%" stripe :data="privileges" prop="id"  @row-dblclick="getmusid()">
-            <el-table-column type="index"/>
-            <el-table-column  prop="name"  label="歌曲标题" width="380"/>
-            <el-table-column  prop="ar[0].name" label="歌手" />
-            <el-table-column  prop="al.name" label="专辑" />
-            <el-table-column  prop='id' label="id"></el-table-column>
-            <el-table-column  prop="publishTime" value-format="HH:mm:ss" label="时长" width="180" />
-            
-        </el-table> -->
         <div class="pritab">
             <table cellpadding="0" cellspacing="0">
                 <th>
@@ -112,20 +102,26 @@ export default {
             thisurl:0
         }
     },
+    created(){
+        
+        
+    },
+    mounted(){
+        this.getPlay();
+        
+    },
+    updated(){
+        this.updateName()
+    },
     computed:{
         timers() {
             return this.formatTime(this.timers)
         },
     },
-    watch: {
-        
-    },
     methods: {
-        lsUpDown() {
-        
-        },
         getPlay() {
             var id = this.$route.query.id;
+            console.log(id)
             this.$axios.get("/playlist/detail?id="+id)
             .then(response=> {
                 //获取歌单
@@ -160,15 +156,13 @@ export default {
                     this.useImg = res.data.profile.avatarUrl;
                 })
             })
+            
         },
-        getmusid:function(id,index){
-            // console.log(row);
-                // this.$axios.get("/song/detail?ids="+id)
-                // .then((res) =>{
-                // // console.log(res);
-                
+        //点击单个歌曲
+        getmusid(id,index){
                 this.thisurl = index;
                 // })
+                console.log(id)
                 var ids = this.$route.query.id;
                 this.$axios.get("/playlist/detail?id="+ids)
                 .then(resp=>{
@@ -177,17 +171,20 @@ export default {
                         var ids = this.privileges[i].id
                         this.ids.push(ids);
                     }
-                this.istr = true;
-                this.singerName = resp.data.playlist.tracks[this.thisurl].ar[0].name;
-                this.musicName = resp.data.playlist.tracks[this.thisurl].name;
-                this.picUrl = resp.data.playlist.tracks[this.thisurl].al.picUrl;
-                bus.emit('musicName',this.musicName);
-                bus.emit('singerName',this.singerName);
-                bus.emit('picUrl',this.picUrl)
-                bus.emit('thisid',this.thisurl);
-                bus.emit('musids',this.ids);
-                bus.emit('istr',this.istr);
+                    this.istr = true;
+                    // console.log(this.thisurl)
+                    this.singerName = resp.data.playlist.tracks[this.thisurl].ar[0].name;
+                    this.musicName = resp.data.playlist.tracks[this.thisurl].name;
+                    this.picUrl = resp.data.playlist.tracks[this.thisurl].al.picUrl;
+                    console.log(this.musicName,this.singerName)
+                    bus.emit('musicName',this.musicName);
+                    bus.emit('singerName',this.singerName);
+                    bus.emit('picUrl',this.picUrl)
+                    bus.emit('thisid',this.thisurl);
+                    bus.emit('musids',this.ids);
+                    bus.emit('istr',this.istr);
                 })
+                // this.updateName()
         },
         foritem(s){
             if(s < 10){
@@ -206,6 +203,7 @@ export default {
                 return minute + ':' + second
                 // return minutes + "分钟" + seconds + "秒";
         },
+        //点击播放全部按钮
         getids(){
             var ids = this.$route.query.id;
             this.$axios.get("/playlist/detail?id="+ids)
@@ -219,52 +217,37 @@ export default {
                 this.thisurl = 0;
                 this.istr = true;
                 this.playLi =resp.data.playlist;
-                // this.singerName = resp.data.playlist.tracks[this.thisurl].ar[0].name;
-                // this.musicName = resp.data.playlist.tracks[this.thisurl].name;
-                // this.picUrl = resp.data.playlist.tracks[this.thisurl].al.picUrl;
-                // bus.emit('musicName',this.musicName);
-                // bus.emit('singerName',this.singerName);
-                // bus.emit('picUrl',this.picUrl)
-                // bus.emit('thisid',this.thisurl);
+                // console.log(this.thisurl)
+                this.singerName = resp.data.playlist.tracks[this.thisurl].ar[0].name;
+                this.musicName = resp.data.playlist.tracks[this.thisurl].name;
+                this.picUrl = resp.data.playlist.tracks[this.thisurl].al.picUrl;
+                bus.emit('musicName',this.musicName);
+                bus.emit('singerName',this.singerName);
+                bus.emit('picUrl',this.picUrl)
+                bus.emit('thisid',this.thisurl);
                 bus.emit('istr',this.istr);
                 bus.emit('musids',this.ids);
             })
-        }
-    },
-    created(){
-        this.getPlay();
-        bus.on('thisurl',thisurl=>{
+            // this.updateName()
+        },
+        updateName(){
+            bus.on('thisurl',thisurl=>{
             this.thisurl = thisurl;
-            
-            // console.log(this.thisurl);
-            this.singerName = this.playLi.tracks[thisurl].ar[0].name;
-            this.musicName = this.playLi.tracks[thisurl].name;
-            this.picUrl = this.playLi.tracks[thisurl].al.picUrl;
+            this.singerName = this.playLi.tracks[this.thisurl].ar[0].name;
+            this.musicName = this.playLi.tracks[this.thisurl].name;
+            this.picUrl = this.playLi.tracks[this.thisurl].al.picUrl;
             // console.log(this.singerName, this.musicName)
-            // console.log(this.thisurl)
+            console.log(this.thisurl)
             bus.emit('musicName',this.musicName);
             bus.emit('singerName',this.singerName);
             bus.emit('picUrl',this.picUrl)
             bus.emit('thisid',this.thisurl);
         })
+            
+        }
     },
-    update(){
-        // bus.on('thisurl',thisurl=>{
-        //     this.thisurl = thisurl;
-        //     console.log(this.thisurl);
-        //     this.singerName = this.playLi.tracks[thisurl].ar[0].name;
-        //     this.musicName = this.playLi.tracks[thisurl].name;
-        //     this.picUrl = this.playLi.tracks[thisurl].al.picUrl;
-        //     // console.log(this.singerName, this.musicName)
-        //     // console.log(this.thisurl)
-        //     bus.emit('musicName',this.musicName);
-        //     bus.emit('singerName',this.singerName);
-        //     bus.emit('picUrl',this.picUrl)
-        //     bus.emit('thisid',this.thisurl);
-        // })
-        // this.getids()
-        // this.getPlay();
-    }
+    
+    
     
 }
 </script>

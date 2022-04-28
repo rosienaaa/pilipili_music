@@ -5,15 +5,26 @@
 			<p>pilipili音乐</p>
 		</div>
 		<div class="head-back">
-			<span id="backone" class="iconfont">&#xe605;</span>
-			<span id="backtwo" class="iconfont">&#xe61d;</span>
+			<span id="backone" @click="backone()" class="iconfont">&#xe605;</span>
+			<span id="backtwo" @click="backtwo()" class="iconfont">&#xe61d;</span>
 		</div>	
 	</div>
 </template>
 
 <script>
 export default {
-    name:'HeadIcon'
+    name:'HeadIcon',
+    data() {
+        return {}
+    },
+    methods:{
+        backone() {
+            this.$router.go(-1)
+        },
+        backtwo() {
+            this.$router.go(1)
+        }
+    }
 }
 </script>
 
@@ -30,8 +41,8 @@ export default {
     position: fixed;
     /* position: absolute; */
     width: 250px;
-    height: 100%;
-    left: 2%;
+    /* height: 100%; */
+    left: 20px;
 }
 
 .head-icon p {
@@ -51,7 +62,7 @@ export default {
 .head-back{
     position: fixed;
     /* background: #fff; */
-    left: 18%;
+    left: 240px;
     top: 28px;
     height:30px;
 }

@@ -3,10 +3,10 @@
         <div class="barList">
             <ul class="bar-di">
                 <div class="linka">
-                    <router-link to="/music/like" class="current" data-id="1" @click="addcla()">推荐</router-link>
-                    <router-link to="/music/playlist" data-id="2" @click="addcla()">歌单</router-link>
-                    <router-link to="/music/rankinglist" data-id="3" @click="addcla()">排行榜</router-link>
-                    <router-link to="/music/singer" data-id="4" @click="addcla()">歌手</router-link>
+                    <router-link to="/music/like" >推荐</router-link>
+                    <router-link to="/music/playlist">歌单</router-link>
+                    <router-link to="/music/rankinglist">排行榜</router-link>
+                    <router-link to="/music/singer">歌手</router-link>
                 </div>
                 
             </ul>
@@ -25,13 +25,6 @@ export default {
             nulls: [],
         }
     },
-    methods:{
-        addcla(){
-            // var curr = document.querySelector('.linka').getElementsByTagName('a')
-            // console.log(curr.getAttribute("data-id"))
-        }
-    }
-    
 }
 </script>
 
@@ -84,11 +77,11 @@ export default {
     float: left;
     cursor: pointer;
     color: #000;
+    text-align: center;
     text-decoration: none;
-    /* background-color: #000; */
+    /* background-color: pink; */
 }
-
-/* .current::after {
+.linka .router-link-active::after{
     content: "";
     display: block;
     position: absolute;
@@ -97,6 +90,6 @@ export default {
     height: 3px;
     border-radius: 2px;
     background: #947ca8;
-} */
+}
 
 </style>

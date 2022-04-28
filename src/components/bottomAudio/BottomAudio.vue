@@ -2,10 +2,10 @@
   <div class="audioMus" onselectstart="return false;">
       <div class="music-container" id="music-container">
         <!-- 音乐信息 -->
-        <div class="music-item">
+        <div class="music-item" v-show="imgtr">
             <img :src="picUrl" alt="">
             <p>{{musicName}}</p>
-             <p>{{singerName}}</p>
+            <p>{{singerName}}</p>
         </div>
         <div class="music-info">
             <!-- 音乐播放进度条 -->
@@ -45,33 +45,30 @@
                         <span class="iconfont" @click="getlike()" v-show="!liketr" style="color:red;">&#xe8c3;</span>
                     </div>
         </div>
-
-        <!-- 默认第一首音乐 -->
-        <!-- <audio v-for="ur in musurl" :src="ur.url" :key="ur.id" id="audio" ></audio> -->
+        <!-- 播放控件 -->
         <audio :src="musurl" ref="audio" v-show="false" preload="auto" controls autoplay @timeupdate="update" @canplay="loadingFinish"></audio>
         <!-- 音乐封面 -->
         <div class="img-container">
             <!-- <img src="" alt="music-cover" id="music-cover"> -->
         </div>
-        <!-- 播放控制 -->
-        
     </div>
   </div>
 </template>
 
 <script>
 import bus from '../../eventBus';
+// import { useStore } from 'vuex'
 export default {
     data() {
         return{
-            thisurl:0,
-            iftr:false,
+            thisurl:0,//歌曲所在下标
+            iftr:false,//暂停以及播放显示
             // isfa:'',
-            musurl:[],
-            musid:'',
-            musids:[],
-            thisur:'',
-            musurls:[],
+            musurl:[],//获取到的歌曲URL
+            // musid:'',
+            musids:[],//获取歌单里的所有歌曲id
+            // thisur:'',
+            // musurls:[],
             totalTime: 0, // 播放总时间--秒
             currentTime: 0, // 当前播放时间--秒
             picUrl:'', //当前歌曲图片
@@ -79,13 +76,31 @@ export default {
             singerName: '', //当前歌手名称
             liketr:true, //当前是否收藏
             musicBar: 0, //进度条的value值
+            imgtr:false, //如果没有图片就不显示图片
         }
     },
     
     created () {
+        
+        
+        // bus.emit('thisurl',this.thisurl)
+    },
+    computed:{
+        formatTotalTime() {
+            return this.formatTime(this.totalTime)
+        },
+        formatCurrentTime() {
+            return this.formatTime(this.currentTime)
+        }
+    },
+    mounted() {
         bus.on('musicUrl',musicUrl=>{
             this.musurl = musicUrl;
+            // console.log(this.musurl);
         });
+        bus.on('musurl',musurl=>{
+            this.musurl = musurl;
+        })
         bus.on('thisid',index=>{
             this.thisurl = index;
             
@@ -110,37 +125,20 @@ export default {
             // console.log(singerName);
         });
         bus.on('picUrl',picUrl=>{
-            this.picUrl = picUrl;
+            if(picUrl == '' || picUrl == undefined || picUrl == null){
+                this.imgtr = false
+            }else{
+                this.picUrl = picUrl;
+                this.imgtr = true;
+            }
+            
             // console.log(picUrl);
         })
-        
-        bus.emit('thisurl',this.thisurl)
-    },
-    beforeUpdate(){
-        
-    },
-    updated(){
-        bus.on('istr',istr=>{
-            this.iftr = istr;
-        })
-        bus.emit('thisurl',this.thisurl)
-        
-    },
-    computed:{
-        formatTotalTime() {
-            return this.formatTime(this.totalTime)
-        },
-        formatCurrentTime() {
-            return this.formatTime(this.currentTime)
-        }
-    },
-    mounted() {
         this.$refs.audio.src = this.audioURL
     // 将range位置归0--如果不使用这个的话，设置了value之后没有用= =郁闷
         setTimeout(() => {
         this.$refs.range.value = 0
         }, 1)
-        
     },
     methods:{
         getlike() {
@@ -169,6 +167,7 @@ export default {
             if(this.thisurl > 0){
                 this.thisurl --
                 // console.log(this.thisurl)
+                bus.emit('thisurl',this.thisurl)
                 this.getSrc()
             }else{
                 alert("没有上一首歌了哦")
@@ -180,12 +179,12 @@ export default {
             if(this.thisurl >=  this.musids.length -1){
                 this.thisurl = 0;
                 this.getSrc()
-                // bus.emit('thisurl',this.thisurl)
+                bus.emit('thisurl',this.thisurl)
             }else{
                 this.thisurl ++
                 this.getSrc()
                 // console.log(this.thisurl)
-                // bus.emit('thisurl',this.thisurl)
+                bus.emit('thisurl',this.thisurl)
             }
         },
 
@@ -237,34 +236,39 @@ export default {
             return minute + ':' + second
         },
         getSrc:function() {
-            // console.log(this.musids)
-            // console.log(audio.readyState)
             if(this.musids !== undefined && this.musids !== '' && this.musids !== null) {
                 this.$axios.get("/song/url?id="+this.musids[this.thisurl]).then((response) =>{
                     // console.log(response)
-                    
                     this.musurl = response.data.data[0].url;
-                    // this.$store.commit('saveMusicUrl',this.musurl)
-                    // console.log(this.musurl) 
                 })}
-            
         },
         getAudioEnded(){
             const audio = this.$refs.audio;
             // console.log(audio.ended)
-            if(audio.ended == true) {
-                console.log('播完啦')
-                this.thisurl++;
-                console.log(this.thisurl)
-                this.$axios.get("/song/url?id="+this.musids[this.thisurl]).then((response) =>{
-                this.musurl = response.data.data[0].url
-                })
+            // console.log(this.thisurl)
+            // console.log(this.musids.length)
+            if(this.musids.length > 0){
+                if(audio.ended == true) {
+                    this.thisurl++;
+                    if(this.thisurl > this.musids.length-1){
+                        console.log("没有啦")
+                        this.iftr = false
+                        this.thisurl = this.musids.length-1
+                        audio.pause();
+                        
+                        // return;
+                    }
+                    bus.emit('thisurl',this.thisurl)
+                    this.$axios.get("/song/url?id="+this.musids[this.thisurl]).then((response) =>{
+                    this.musurl = response.data.data[0].url
+                    })
+                }
             }
-            if(this.thisurl > this.musids.length-1){
-                console.log("没有啦")
-                this.iftr = false
-                audio.pause();
-                // return;
+            else if(this.musids.length == 0) {
+                if(audio.ended == true) {
+                    this.iftr = false;
+                    audio.pause();
+                }
             }
         }
         }
@@ -272,17 +276,8 @@ export default {
 </script>
 
 <style>
-.audioMus {
-    position: fixed;
-    bottom: 0;
-    height:65px;
-    border-radius: 0;
-    background-color: white;
-    border-top: 1px solid rgba(0, 0, 0, 0.2);
-    width: 100%;
-}
-
 .music-container{
+    height:100%;
     margin-left: 40%;
     margin-top: 10px;
 }
@@ -326,7 +321,7 @@ export default {
 }
 .music-timer{
     position: absolute;
-    left: 33%;
+    left: 510px;
     top: 42px;
     font-size: 15px;
     color: rgb(151, 145, 145)
@@ -342,8 +337,9 @@ export default {
 .navigation{
     /* background-color: #000; */
     /* color: white; */
-    position:fixed;
-    left: 36%;
+    position:absolute;
+    left: 550px;
+    width: 550px;
     border: none;
     margin-right: 80px;
 }
@@ -364,7 +360,7 @@ audio {
 .progress-container{
     position: absolute;
     top: 38px;
-    left: 36%;
+    left: 550px;
 }
 input[type='range'] {
     outline: none;

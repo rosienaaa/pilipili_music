@@ -105,7 +105,7 @@ export default {
 } */
 .head-login {
     position: absolute;
-    right: 10%;
+    left: 1300px;
     top: 28px;
     color: #fff;
     cursor: pointer;

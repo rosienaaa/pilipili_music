@@ -14,7 +14,8 @@
 
 <script>
 export default {
-    name: 'NavTab'
+    name: 'NavTab',
+    
 }
 </script>
 
@@ -69,5 +70,13 @@ export default {
     color: rgba(0, 0, 0, 0.6);
     /* background-color: #000; */
 }
-
+.curren{
+    position: absolute;
+    top: 0;
+    left: 200px;
+    height:100%;
+    width:1348px;
+    overflow:auto;
+    /* background-color: pink; */
+}
 </style>

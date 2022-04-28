@@ -1,82 +1,36 @@
 <template>
-  <div id="search">
     <div class="head-search">
-        <span v-on:click="searchMusic()" @click="!searShow" class="iconfont">&#xe693;</span>
-        <input v-model="query" @click="searShow" v-on:keydown.enter="searchShow" v-on:keyup.enter="searchMusic" id="search-input" type="search" placeholder="请输入音乐/视频">
-        <div class="searchs" v-if="query != '' && musicList != ''" v-show="isShow">
-            <ul>
-                <li v-for="item in musicList" v-on:click="playMusic(item.id)" :key="item.id">
-                    {{item.name}}
-                </li>
-            </ul>
+        <div class="search-icon">
+            <span v-on:click="searchMusic()" class="iconfont">&#xe693;</span>
+            <input v-model="query" v-on:keydown.enter="searchMusic()" id="search-input" type="search" placeholder="请输入音乐/视频">
         </div>
     </div>
-    <div class="src-songs">
-        <image :src="musicPic" class="musicPic" />
-    </div>
-</div>
 </template>
 
 <script>
-import bus from '../../eventBus';
+// import bus from '../../eventBus';
 export default {
     name: 'HeadSearch',
     // el: '#search',
     data() {
         return {
-            isShow: false,
             query: '',
-            musicList: [],
-            musicUrl: '',
-            musicPic: '',
-            hotComments: []
         }
     },
+    mounted () {
+        // this.ifquery()
+    },
+    beforeUpdate() {
+        // this.ifquery()
+    },
     methods: {
-        searCli: function() {
-            this.isShow === true;
+        searchMusic() {
+            if(this.query == ''){
+                return alert("搜索词为空")
+            }else{
+                this.$router.push(`/search?id=${this.query}`);
+            }
         },
-        searShow() {
-            this.isShow = !this.isShow;
-        },
-        searchShow() {
-            this.isShow === false;
-        },
-        searchMusic: function() {
-            var that = this;
-            this.$axios.get("https://autumnfish.cn/search?limit=15&keywords=" + that.query)
-            .then(function(response) {
-                that.musicList = response.data.result.songs;
-                    // console.log(response);
-                console.log(this.musicList);
-            }, function(error) {
-                console.log(error);
-            })
-        },
-        playMusic: function(musicId) {
-            var that = this;
-            this.$axios.get("https://autumnfish.cn/song/url?id=" + musicId).then(function(response) {
-                    that.musicUrl = response.data.data[0].url;
-                    bus.emit('musicUrl',that.musicUrl);
-                    console.log(that.musicUrl);
-                }, function(error) {
-                    console.log(error);
-                })
-                //获取封面
-            this.$axios.get("https://autumnfish.cn/song/detail?ids=" + musicId).then(function(response) {
-                    // console.log(response.data.songs[0].al.picUrl);
-                    that.musicPic = response.data.songs[0].al.picUrl
-                }, function(error) {
-                    console.log(error);
-                })
-                //获取评论 
-            this.$axios.get("https://autumnfish.cn/comment/hot?type=0&id=" + musicId).then(function(response) {
-                // console.log(response.data.hotComments);
-                that.hotComments = response.data.hotComments;
-            }, function(error) {
-                console.log(error);
-            })
-        }
     }
 }
 </script>
@@ -85,26 +39,23 @@ export default {
 .head-search {
     position: absolute;
     width: 170px;
-    height: 35px;
-    top: 3%;
-    right: 20%;
+    left: 1100px;
+    top: 21px;
+    right: 300px;
     background-color: rgba(141, 92, 145, 0.4);
     border-radius: 10px;
 }
 
-.searchs {
-    width: 200px;
-    height: 200px;
+.search-list{
+    /* position: absolute; */
+    width: 300px;
+    height: 300px;
     background-color: white;
-    overflow: auto;
-    z-index: 4;
+    overflow: scroll;
+    border-radius: 10px;
+    box-shadow:1px 1px 1px black;
+    /* z-index: 100; */
     /* display: none; */
-}
-
-.searchs ul li {
-    cursor: pointer;
-    margin: 10px;
-    
 }
 
 .head-search input {
