@@ -83,7 +83,6 @@ export default {
     width: 100%;
     top: 225px;
 }
-
 .play-aul a{
     width: 170px;
     height:245px;

@@ -8,7 +8,7 @@
         <div class="track_names">
             <p>歌单</p>
             <p>{{playName}}</p>
-            <a href="#" >{{useName}}</a>
+            <a @click="addusers()">{{useName}}</a>
             <img :src="useImg">
             <p>简介：{{playLi.description}}</p>
             <ul>
@@ -46,7 +46,7 @@
                 </th>
                 <tr>
                     <td>
-                        <li v-for="ite in 10" :key=ite>{{foritem(ite)}}</li>
+                        <li v-for="ite in privileges.length" :key=ite>{{foritem(ite)}}</li>
                     </td>
                     <td class="index">
                         <li  v-for="(mu,index) in privileges" @dblclick="getmusid(mu.id,index)" ref="dataid" :data-id="index" :key="index">{{mu.name}}</li>
@@ -156,7 +156,9 @@ export default {
                     this.useImg = res.data.profile.avatarUrl;
                 })
             })
-            
+        },
+        addusers(){
+            this.$router.push(`/personal?useid=${this.useId}`)
         },
         //点击单个歌曲
         getmusid(id,index){
@@ -383,6 +385,7 @@ export default {
     text-decoration: none;
     color:rgb(115, 149, 164);
     font-size:14px;
+    cursor: pointer;
 }
 .track_names p:nth-child(1){
     position: absolute;

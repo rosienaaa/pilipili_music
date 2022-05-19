@@ -22,7 +22,8 @@
             <form>
                 <div class="user-inp">
                     <input class="in1" v-model="userPhone" type="text" placeholder="请输入手机号"/>
-                    <input class="in2" v-model="userPassword" type="password" placeholder="请输入密码" autocomplete />
+                    <input class="in2" v-model="captcha" style="width:150px;" type="password" placeholder="请输入验证码" autocomplete />
+                    <input type="submit" id="capt" value="获取验证码" @click="getcapt()">
                 </div>
             </form>
             <div class="login-inp">
@@ -48,7 +49,6 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
 export default {
     name:'HeadLogin',
     el: '#loginto',
@@ -81,15 +81,30 @@ export default {
             this.isFalse = !this.isFalse;
             
         },
-        ...mapMutations(['changeLogin']),
+        getcapt(){
+            this.$axios.get("/captcha/sent?phone="+this.userPhone).then(response =>{
+                console.log(response)
+            })
+            // this.$axios.get("/captcha/verify?phone=")
+        },
         userLogin(){
             // if(this.userPhone === '' || this.userPassword === ''){
             //     alert('账号或密码不能为空');
             // }
             // else{
-                this.$axios.get("/login/cellphone?phone="+this.userPhone+"&password="+this.userPassword).then((response) =>{
-                    console.log(response);
-                })
+                this.$axios.get("/captcha/verify?phone="+this.userPhone+"&captcha="+this.captcha).then(response =>{
+                        // console.log(response)
+                    if(response.data.data === true) {
+                        alert('登录成功')
+                        this.$axios.get("/login/cellphone?phone="+this.userPhone+"&captcha="+this.captcha).then(respon =>{
+                            console.log(respon)
+                            this.userId = respon.data.account.id;
+                            this.$axios.get("/user/detail?uid="+this.userId).then(res =>{
+                                console.log(res)
+                            })
+                        })
+                    }
+                    })
             // }
         },
     }
@@ -192,7 +207,16 @@ export default {
     color: #947ca8;
     cursor: pointer;
 }
-
+#capt{
+    position: absolute;
+    width:90px;
+    border-radius:20px;
+    margin-left: 10px;
+    text-align: left;
+    font-size:13px;
+    cursor: pointer;
+    color: rgb(125, 125, 125);
+}
 
 #but1-2 {
     position: absolute;

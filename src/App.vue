@@ -5,10 +5,13 @@
       <Search></Search>
       <Login></Login>
     </div>
-    <div>
+    <div class="nav">
       <Nav></Nav>
     </div>
+    <div class="bottomm">
       <bottom/>
+    </div>
+      
   </div>
 </template>
 
@@ -59,7 +62,15 @@ export default {
 .app {
     position: relative;
 }
-
+.audioMus {
+    position: fixed;
+    bottom: 0;
+    height:65px;
+    border-radius: 0;
+    background-color: white;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    width: 100%;
+}
 
 
 </style>

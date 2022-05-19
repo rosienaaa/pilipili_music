@@ -10,6 +10,12 @@ import YouLike from '../components/bars/YouLike.vue'
 import RankingList from '../components/bars/RankingList.vue'
 import Singer from '../components/bars/SinGer.vue'
 import MusicTrack from '../components/playlists/MusicTrack.vue'
+import SearchList from '../components/playlists/SearchList.vue'
+import PersonAl from '../components/personal/PersonAl.vue'
+// import SerachSong from '../components/searchlist/SearchSong.vue'
+// import SerachSinger from '../components/searchlist/SearchSinger.vue'
+// import SerachAlbum from '../components/searchlist/SearchAlbum.vue'
+// import SerachSheet from '../components/searchlist/SearchSheet.vue'
 
 const router = createRouter({
     history:createWebHashHistory(),
@@ -61,6 +67,36 @@ const router = createRouter({
         {
             path:'/musiclist',
             component: MusicTrack
+        },
+        {
+            path: '/search',
+            component:SearchList
+            // children: [
+            //     {
+            //         path:'',
+            //         component:SerachSong
+            //     },
+            //     {
+            //         path:'serchsong',
+            //         component:SerachSong
+            //     },
+            //     {
+            //         path:'serchsinger',
+            //         component:SerachSinger
+            //     },
+            //     {
+            //         path:'serchsheet',
+            //         component:SerachSheet
+            //     },
+            //     {
+            //         path:'serchalbum',
+            //         component:SerachAlbum
+            //     }
+            // ]
+        },
+        {
+            path:'/personal',
+            component: PersonAl
         }
     ]
 })

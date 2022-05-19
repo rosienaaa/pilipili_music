@@ -1,10 +1,9 @@
 // import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 
 // Vue.use(Vuex)
-
-
-    const state = {
+//创建状态
+const state = {
     //登录状态
     login:false,
     // 是否登录
@@ -17,7 +16,7 @@ import Vuex from 'vuex'
     musicListId: '',
     //当前播放的歌曲URL
     musicUrl:'',
-    
+    query: '',
     // 当前播放音乐的索引
     currentIndex: -1,
     // 音乐详情卡片的显隐
@@ -31,6 +30,7 @@ import Vuex from 'vuex'
     // 用户喜欢的音乐列表
     likeMuiscList: [],
     // 已收藏的歌单
+
     // 已收藏的专辑
     subAlbumList: null,
     // 已收藏的歌手
@@ -48,17 +48,113 @@ import Vuex from 'vuex'
     },
     // 已喜欢的视频
     likeVideoList: null,
-    }
+}
 
-    {
-        //保存当前播放歌曲的url
-        // saveMusicUrl(state,musicUrl){
-        //     state.musicUrl = musicUrl;
-        // }
-    }
+//创建actions
+const actions = {
 
-    const store = new Vuex.Store({
-        state,
-        mutations: {}
-    })
-    export default store;
+}
+
+//创建mutataions
+const mutations = {
+    updateQuery(state, query){
+        state.query = query
+    },
+    // 更新音乐url
+    updateMusic(state,musicUrl){
+        state.musicUrl = musicUrl;
+    },
+    upadateMusicListId(state,musicListId){
+        state.musicListId = musicListId;
+    },
+    // 修改播放状态
+    changePlayState(state, isPlay) {
+        state.isPlay = isPlay;
+        // console.log('changePlayState');
+    },
+    // 更新歌单列表和歌单id
+    updateMusicList(state, payload) {
+        // 当歌单id发生变化时,重置当前播放音乐索引
+        if (payload.musicListId != state.musicListId) {
+            state.musicListId = payload.musicListId;
+            state.currentIndex = -1;
+        }
+        // console.log(state.currentIndex);
+        // 对歌单进行深拷贝再赋值 直接赋值是浅拷贝
+        // 歌单是固定的死数据，而vuex中的musicList是动态的
+        let musicList = payload.musicList.slice(0)
+        state.musicList = musicList;
+        // console.log('updateMusicList');
+    },
+
+    //更新登录状态
+    updataLoginState(state, flag = false) {
+        state.isLogin = flag;
+    },
+
+    // 当前播放音乐的索引
+    updateCurrentIndex(state, index) {
+        // console.log('updateCurrentIndex');
+        state.currentIndex = index;
+        // console.log(state.currentIndex);
+    },
+    // 切换音乐详情卡片的显隐
+    changeMusicDetailCardState(state) {
+        state.isMusicDetailCardShow = !state.isMusicDetailCardShow;
+    },
+    updateCurrentTime(state, currentTime) {
+        state.currentTime = currentTime;
+    },
+    // 更新音乐的加载状态
+    updateMusicLoadState(state, isLoad) {
+        state.isMusicLoad = isLoad;
+    },
+    // 用于记录当前播放行的信息 便于下次渲染和清除播放样式
+    updateCurrentRowInfo(state, currentRowInfo) {
+        state.currentRowInfo = currentRowInfo;
+    },
+    // 更新用户喜欢的音乐列表
+    // 才发现这里拼错了 懒得改了
+    updataLikeMuiscList(state, likeMuiscList) {
+        state.likeMuiscList = likeMuiscList;
+    },
+    // 更新已收藏的专辑列表
+    updateSubAlbumList(state, subAlbumList) {
+        state.subAlbumList = subAlbumList;
+    },
+    // 更新已收藏的歌手列表
+    updateSubSingerList(state, subSingerList) {
+        state.subSingerList = subSingerList;
+    },
+    // 更新已收藏的视频列表
+    updateSubVideoList(state, subVideoList) {
+        state.subVideoList = subVideoList;
+    },
+    // 更新已收藏的歌单
+    updateCollectMusicList(state, collectMusicList) {
+        state.collectMusicList = collectMusicList;
+    },
+    // 更新用户创建的歌单
+    updateCreatedMusicList(state, createdMusicList) {
+        state.createdMusicList = createdMusicList;
+    },
+    // 更新当前下载的音乐信息
+    updateDownloadMusicInfo(state, info) {
+        state.downloadMusicInfo = info;
+    },
+    // 更新已喜欢的视频列表
+    updateLikeVideoList(state, likeVideoList) {
+        state.likeVideoList = likeVideoList;
+    },
+}
+
+//创建store
+const store = createStore({
+state,
+actions,
+mutations
+})
+//暴露出去
+export default store;
+
+

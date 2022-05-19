@@ -29,6 +29,7 @@ export default {
                 return alert("搜索词为空")
             }else{
                 this.$router.push(`/search?id=${this.query}`);
+                // bus.emit('query',this.query);
             }
         },
     }
