@@ -5,8 +5,8 @@
                 <div class="linka">
                     <router-link to="/">推荐</router-link>
                     <router-link to="/music/playlist">歌单</router-link>
-                    <router-link to="/music/rankinglist">排行榜</router-link>
-                    <router-link to="/music/singer">歌手</router-link>
+                    <router-link to="/music/rankinglist" v-show="false">排行榜</router-link>
+                    <router-link to="/music/singer" v-show="false">歌手</router-link>
                 </div>
                 
             </ul>
